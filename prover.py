@@ -59,13 +59,29 @@ def gen_merkle_proof(leaves, pos):
 
     level_pos = pos    # local copy of pos
 
+    
+    '''Parte implementada por Amanda Costa'''
     for level in range(height):
 
-#######  YOUR CODE GOES HERE                              ######
-#######     to hash internal nodes in the tree use the    ######
-#######     function hash_internal_node(left,right)       ######
+        print(level, level_pos, len(state))
 
+        # encontra localização da posição na tree
+        if level_pos % 2 == 0:
+            path_to_add = state[level_pos + 1] 
+        else: 
+            path_to_add = state[level_pos - 1] 
+        
+        # adiciona hash da folha relacionada ao path de prova
+        path.append(path_to_add)
 
+        # computa o nível novo da merkle tree (folha pai)
+        left = state[::2]
+        right =  state[1::2]
+        state = list(map(hash_internal_node, left, right))
+
+        # sobe um nível
+        level_pos = level_pos//2
+    
     # return a list of hashes that makes up the Merkle proof
     return path
 

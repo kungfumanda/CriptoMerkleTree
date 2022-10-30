@@ -63,9 +63,7 @@ def gen_merkle_proof(leaves, pos):
     '''Parte implementada por Amanda Costa'''
     for level in range(height):
 
-        print(level, level_pos, len(state))
-
-        # encontra localização da posição na tree
+        # encontra localização da posição na tree (direita/esquerda)
         if level_pos % 2 == 0:
             path_to_add = state[level_pos + 1] 
         else: 
@@ -74,12 +72,12 @@ def gen_merkle_proof(leaves, pos):
         # adiciona hash da folha relacionada ao path de prova
         path.append(path_to_add)
 
-        # computa o nível novo da merkle tree (folha pai)
+        # computa o nível novo da merkle tree (andar acima)
         left = state[::2]
         right =  state[1::2]
         state = list(map(hash_internal_node, left, right))
 
-        # sobe um nível
+        # sobe um nível na árvore - posição agora corresponde ao nó pai
         level_pos = level_pos//2
     
     # return a list of hashes that makes up the Merkle proof
